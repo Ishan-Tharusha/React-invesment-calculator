@@ -1,18 +1,21 @@
 import { calculateInvestmentResults, formatter } from '../util/investment.js';
 
 export default function Results({ input }) {
-  const { initialInvesment, annuelInvesment, expectedReturn, duration } = input;
+  if (!input) return null;
 
-  // Map the input object to the expected parameter structure
+  const { initialInvestment, annualInvestment, expectedReturn, duration } = input;
+
   const resultData = calculateInvestmentResults({
-    initialInvestment: initialInvesment,
-    annualInvestment: annuelInvesment,
-    expectedReturn: expectedReturn,
-    duration: duration,
+    initialInvestment,
+    annualInvestment,
+    expectedReturn,
+    duration,
   });
 
-  // Rename the local variable to avoid conflicts
-  const baseInvestment = resultData[0].valueEndOfYear - resultData[0].interest - resultData[0].annualInvestment;
+  const baseInvestment =
+    resultData[0].valueEndOfYear -
+    resultData[0].interest -
+    resultData[0].annualInvestment;
 
   return (
     <table id="result">
@@ -28,7 +31,9 @@ export default function Results({ input }) {
       <tbody>
         {resultData.map((yearData) => {
           const totalInterest =
-            yearData.valueEndOfYear - yearData.annualInvestment * yearData.year - baseInvestment;
+            yearData.valueEndOfYear -
+            yearData.annualInvestment * yearData.year -
+            baseInvestment;
           const totalInvested = yearData.valueEndOfYear - totalInterest;
           return (
             <tr key={yearData.year}>
